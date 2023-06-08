@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import styles from './App.css';
+import Blockchain from './components/Blockchain';
 
-function App() {
+const App = () => {
+  const [blockchain, setBlockchain] = useState([]);
+  const url = 'http://localhost:5001/api/1/blocks';
+
+  const loadBlockchain = async () => {
+    const { data } = await axios.get(url);
+    console.log(data);
+    setBlockchain(data);
+  };
+
+  useEffect(() => {
+    loadBlockchain();
+  }, []);
+
+  const onAddBlockHandler = async (e) => {
+    e.preventDefault();
+    const data = e.target.data.value;
+    const newBlock = { data };
+    const response = await axios.post(url, newBlock);
+    console.log(response);
+    loadBlockchain();
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <article className={styles.container}>
+        <h1>Blockchain Client</h1>
+        <section>
+          <Blockchain blocks={blockchain} onAddBlock={onAddBlockHandler} />
+        </section>
+      </article>
+    </main>
   );
-}
+};
 
 export default App;
