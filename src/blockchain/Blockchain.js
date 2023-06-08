@@ -7,6 +7,11 @@ class Blockchain {
   }
 
   addBlock({ data }) {
+
+    if (data == null || data === "" || (Object.keys(data).length === 0 && data.constructor === Object)) {
+      throw new Error("Data must be provided to add a block");
+    }
+
     const addedBlock = Block.mineBlock({ lastBlock: this.chain.at(-1), data });
     this.chain.push(addedBlock);
     return addedBlock;

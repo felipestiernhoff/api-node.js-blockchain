@@ -7,7 +7,7 @@ const Blockchain = ({ blocks, onAddBlock }) => {
     <>
       <form onSubmit={onAddBlock}>
         <div className={styles['form-controls']}>
-          <input type='text' name='data' />
+          <input type='text' name='data' required/>
           <button className={styles.btn}>Add Block</button>
         </div>
       </form>

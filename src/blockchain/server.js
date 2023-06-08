@@ -14,6 +14,13 @@ app.get('/api/1/blocks', (req, res) => {
 
 app.post('/api/1/blocks', (req, res) => {
   const { data } = req.body;
+
+  console.log(`recieved data: ${data}`);
+
+  if (!data || data.trim() === '') {
+    return res.status(400).json({ message: 'Data is required' });
+  }
+
   const block = blockchain.addBlock({ data });
 
   res.status(201).json({ message: 'Added new block', block: block });
